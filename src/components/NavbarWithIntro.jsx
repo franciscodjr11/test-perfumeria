@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Flip } from 'gsap/Flip';
 import { useCart } from '../context/CartContext';
+import logoImage from '../../img/todo_aroma_nb.png';
 
 import './NavbarWithIntro.css';
 
@@ -73,7 +74,7 @@ export default function NavbarWithIntro() {
         <img
           ref={logoRef}
           className="logo-hero"
-          src="img/todo_aroma_nb.png" 
+          src={logoImage}
           alt="Todo Aroma Logo"
         />
       </div>
