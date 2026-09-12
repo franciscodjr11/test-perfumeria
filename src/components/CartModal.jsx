@@ -13,7 +13,7 @@ export default function CartModal() {
   const handleSendWhatsApp = () => {
     if (cart.length === 0) return;
 
-    let message = `¡Hola! Quisiera realizar el siguiente pedido en *Todo Aroma*:\n\n`;
+    let message = `¡Hola! Quisiera realizar el siguiente pedido en *Test Perfumeria*:\n\n`;
     cart.forEach((item) => {
       message += `• *${item.name}* (${item.brand}) x${item.quantity} - $${(
         item.price * item.quantity
