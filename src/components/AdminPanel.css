@@ -1,0 +1,166 @@
+.admin-panel {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto 72px;
+  padding: 28px;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: #151411;
+}
+
+.admin-panel-heading,
+.admin-product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-panel-heading {
+  margin-bottom: 22px;
+}
+
+.admin-panel-heading h2,
+.admin-login-modal h2 {
+  margin-top: 6px;
+  color: #f3e5ab;
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.admin-panel-heading > span,
+.admin-eyebrow {
+  color: #d4af37;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.admin-product-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.admin-product-form input,
+.admin-product-form select,
+.admin-product-form button {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #0d0d0c;
+  color: #f5f5f5;
+  font: inherit;
+}
+
+.admin-file-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #a0a0a0;
+  font-size: 0.85rem;
+}
+
+.admin-file-field input {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f5f5f5;
+}
+
+.admin-image-preview {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.admin-product-form button,
+.google-login-button {
+  border-color: #d4af37;
+  background: #d4af37;
+  color: #111;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-product-list {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-form-error {
+  margin: -12px 0 20px;
+  color: #e58b8b;
+  font-size: 0.9rem;
+}
+
+.admin-product-row {
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-product-row small {
+  margin-left: 8px;
+  color: #888;
+}
+
+.admin-product-row button {
+  border: 0;
+  background: transparent;
+  color: #e58b8b;
+  cursor: pointer;
+}
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.admin-login-modal {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 32px;
+  background: #171614;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.admin-login-modal p {
+  margin: 14px 0 24px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+.admin-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.google-login-button {
+  width: 100%;
+  padding: 12px;
+}
+
+@media (max-width: 700px) {
+  .admin-panel {
+    width: calc(100% - 32px);
+    padding: 20px;
+  }
+
+  .admin-product-form {
+    grid-template-columns: 1fr;
+  }
+}

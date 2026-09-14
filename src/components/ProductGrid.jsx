@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { products } from '../data/products';
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
-export default function ProductGrid({ selectedCategory }) {
+export default function ProductGrid({ selectedCategory, products }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredProducts = products.filter((product) => {

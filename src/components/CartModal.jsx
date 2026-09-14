@@ -21,7 +21,7 @@ export default function CartModal() {
     });
     message += `\n*Total estimado:* $${total.toFixed(2)}\n\n¿Tienen disponibilidad para coordinar la entrega?`;
 
-    const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${8099384669}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
 

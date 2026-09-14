@@ -8,12 +8,22 @@ import './NavbarWithIntro.css';
 
 gsap.registerPlugin(Flip);
 
-export default function NavbarWithIntro({ categories, selectedCategory, onCategoryChange }) {
+export default function NavbarWithIntro({
+  categories,
+  selectedCategory,
+  onCategoryChange,
+}) {
   const logoRef = useRef(null);
   const destinationRef = useRef(null);
   const overlayRef = useRef(null);
   const animationStartedRef = useRef(false);
   const { totalCount, setIsCartOpen } = useCart();
+
+  const handleContactWhatsApp = () => {
+    const message = '¡Hola! Me gustaría comunicarme con Test Perfumeria.';
+    const url = `https://wa.me/8099384669?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   useEffect(() => {
     const logo = logoRef.current;
@@ -97,10 +107,14 @@ export default function NavbarWithIntro({ categories, selectedCategory, onCatego
           ))}
         </div>
 
-        {/* Indicador del Carrito en dorado */}
-        <button className="cart-indicator" onClick={() => setIsCartOpen(true)}>
-          🛒 Carrito ({totalCount})
-        </button>
+        <div className="navbar-actions">
+          <button className="contact-indicator" onClick={handleContactWhatsApp}>
+            Contactanos
+          </button>
+          <button className="cart-indicator" onClick={() => setIsCartOpen(true)}>
+            🛒 Carrito ({totalCount})
+          </button>
+        </div>
       </nav>
     </>
   );

@@ -99,6 +99,42 @@
   transform: scale(1.05);
 }
 
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.contact-indicator {
+  border: 1px solid #D4AF37;
+  border-radius: 18px;
+  padding: 7px 12px;
+  background: rgba(212, 175, 55, 0.08);
+  color: #D4AF37;
+  cursor: pointer;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  white-space: nowrap;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.contact-indicator:hover {
+  background: #D4AF37;
+  color: #101010;
+}
+
+.admin-indicator {
+  border: 0;
+  background: transparent;
+  color: #A0A0A0;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.admin-indicator:hover {
+  color: #F3E5AB;
+}
+
 .cart-indicator {
   border: 0;
   background: transparent;
@@ -139,6 +175,11 @@
   }
 
   .cart-indicator {
+    font-size: 0.75rem;
+  }
+
+  .contact-indicator {
+    padding-inline: 8px;
     font-size: 0.75rem;
   }
 }
