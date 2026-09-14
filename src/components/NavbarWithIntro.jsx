@@ -8,7 +8,7 @@ import './NavbarWithIntro.css';
 
 gsap.registerPlugin(Flip);
 
-export default function NavbarWithIntro() {
+export default function NavbarWithIntro({ categories, selectedCategory, onCategoryChange }) {
   const logoRef = useRef(null);
   const destinationRef = useRef(null);
   const overlayRef = useRef(null);
@@ -82,6 +82,20 @@ export default function NavbarWithIntro() {
       {/* Barra de navegación */}
       <nav className="navbar">
         <div ref={destinationRef} id="logo-destination"></div>
+
+        <div className="category-nav" aria-label="Categorías de perfumes">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`category-nav-btn ${
+                selectedCategory === category ? 'active' : ''
+              }`}
+              onClick={() => onCategoryChange(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
         {/* Indicador del Carrito en dorado */}
         <button className="cart-indicator" onClick={() => setIsCartOpen(true)}>

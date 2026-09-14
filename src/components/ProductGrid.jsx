@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { products, categories } from '../data/products';
+import { useState } from 'react';
+import { products } from '../data/products';
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
-export default function ProductGrid() {
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+export default function ProductGrid({ selectedCategory }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredProducts = products.filter((product) => {
@@ -30,20 +29,6 @@ export default function ProductGrid() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {/* Filtro por Categorías */}
-        <div className="category-filters">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`filter-btn ${
-                selectedCategory === category ? 'active' : ''
-              }`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Rejilla de Productos */}
