@@ -9,6 +9,7 @@ export const AdminDashboard = ({ onLogout, products, onDeleteProduct }) => {
     name: '',
     category: 'Comercial',
     price: '',
+    stock: '',
     description: '',
     imageFile: null,
     imagePreview: ''
@@ -51,6 +52,7 @@ export const AdminDashboard = ({ onLogout, products, onDeleteProduct }) => {
         name: formData.name,
         category: formData.category,
         price: Number(formData.price),
+        stock: Number(formData.stock),
         description: formData.description,
         image: firebaseImageUrl, // URL generada por el servidor
         createdAt: new Date()
@@ -63,6 +65,7 @@ export const AdminDashboard = ({ onLogout, products, onDeleteProduct }) => {
         name: '',
         category: 'Comercial',
         price: '',
+        stock: '',
         description: '',
         imageFile: null,
         imagePreview: ''
@@ -120,6 +123,17 @@ export const AdminDashboard = ({ onLogout, products, onDeleteProduct }) => {
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
                 />
               </div>
+            </div>
+
+            <div className="form-group">
+              <label>Stock / Existencias</label>
+              <input 
+                type="number" 
+                min="0"
+                placeholder="Ej. 5"
+                value={formData.stock}
+                onChange={(e) => setFormData({...formData, stock: Number(e.target.value)})}
+              />
             </div>
 
             <div className="form-group">

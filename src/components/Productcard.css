@@ -22,6 +22,10 @@
   object-fit: cover;
 }
 
+.out-of-stock .product-image {
+  opacity: 0.55;
+}
+
 .product-info {
   display: flex;
   flex-direction: column;
@@ -52,6 +56,24 @@
   line-height: 1.4;
 }
 
+.stock-badge {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stock-badge.available {
+  color: #B7E4C7;
+  background: rgba(46, 125, 50, 0.25);
+}
+
+.stock-badge.empty {
+  color: #F2B8B5;
+  background: rgba(183, 28, 28, 0.25);
+}
+
 .product-footer {
   display: flex;
   align-items: center;
@@ -77,6 +99,16 @@
 
 .btn-add-cart:hover {
   background: #F3E5AB;
+}
+
+.btn-add-cart:disabled {
+  color: #777777;
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.btn-add-cart:disabled:hover {
+  background: #333333;
 }
 
 .badge-gold {

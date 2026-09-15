@@ -8,13 +8,16 @@ const emptyProduct = {
   brand: '',
   category: 'Damas',
   price: '',
+  stock: '',
   topNotes: '',
   imageFile: null,
   imagePreview: '',
+  image: '',
 };
 
-export default function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
+export default function AdminPanel({ products, onAddProduct, onUpdateProduct, onDeleteProduct }) {
   const [form, setForm] = useState(emptyProduct);
+  const [editingProductId, setEditingProductId] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,34 +35,46 @@ export default function AdminPanel({ products, onAddProduct, onDeleteProduct }) 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!form.imageFile) {
-      setError('Selecciona una foto antes de agregar el producto.');
+    if (!form.name || !form.price || (!editingProductId && !form.imageFile)) {
+      setError(editingProductId ? 'Completa el nombre y el precio del producto.' : 'Completa el nombre, precio y selecciona una foto.');
       return;
     }
 
     try {
       setUploading(true);
       setError('');
-      const storage = getFirebaseStorage();
-      const filePath = `products/${crypto.randomUUID()}-${form.imageFile.name}`;
-      const storageRef = ref(storage, filePath);
-      await uploadBytes(storageRef, form.imageFile);
-      const image = await getDownloadURL(storageRef);
+      let image = form.image;
+      if (form.imageFile) {
+        const storage = getFirebaseStorage();
+        const filePath = `products/${crypto.randomUUID()}-${form.imageFile.name}`;
+        const storageRef = ref(storage, filePath);
+        await uploadBytes(storageRef, form.imageFile);
+        image = await getDownloadURL(storageRef);
+      }
 
-      onAddProduct({
-        ...form,
+      const productData = { ...form };
+      delete productData.imageFile;
+      delete productData.imagePreview;
+      const product = {
+        ...productData,
         image,
-        id: crypto.randomUUID(),
+        id: editingProductId || crypto.randomUUID(),
         price: Number(form.price),
-        rating: 5,
-        description: `Fragancia ${form.brand} ${form.name}`,
-        heartNotes: '',
-        baseNotes: '',
-        isBestSeller: false,
-        imageFile: undefined,
-        imagePreview: undefined,
-      });
+        stock: Number(form.stock),
+        rating: form.rating ?? 5,
+        description: form.description || `Fragancia ${form.brand} ${form.name}`,
+        heartNotes: form.heartNotes ?? '',
+        baseNotes: form.baseNotes ?? '',
+        isBestSeller: form.isBestSeller ?? false,
+      };
+
+      if (editingProductId) {
+        onUpdateProduct(product);
+      } else {
+        onAddProduct(product);
+      }
       setForm(emptyProduct);
+      setEditingProductId(null);
     } catch (uploadError) {
       console.error('Error al subir la imagen:', uploadError);
       setError('No se pudo subir la imagen. Revisa la configuración y las reglas de Firebase.');
@@ -70,6 +85,24 @@ export default function AdminPanel({ products, onAddProduct, onDeleteProduct }) 
 
   const updateField = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
+  const handleEdit = (product) => {
+    setForm({
+      ...emptyProduct,
+      ...product,
+      stock: product.stock ?? 0,
+      imagePreview: product.image,
+      imageFile: null,
+    });
+    setEditingProductId(product.id);
+    setError('');
+  };
+
+  const handleCancelEdit = () => {
+    setForm(emptyProduct);
+    setEditingProductId(null);
+    setError('');
   };
 
   return (
@@ -91,17 +124,23 @@ export default function AdminPanel({ products, onAddProduct, onDeleteProduct }) 
           <option>Unisex</option>
         </select>
         <input name="price" type="number" min="0" step="0.01" placeholder="Precio" value={form.price} onChange={updateField} required />
+        <input name="stock" type="number" min="0" placeholder="Existencias" value={form.stock} onChange={updateField} required />
         <label className="admin-file-field">
           Foto del producto
-          <input name="imageFile" type="file" accept="image/*" onChange={handleImageChange} required />
+          <input name="imageFile" type="file" accept="image/*" onChange={handleImageChange} required={!editingProductId} />
         </label>
         {form.imagePreview && (
           <img className="admin-image-preview" src={form.imagePreview} alt="Vista previa del producto" />
         )}
         <input name="topNotes" placeholder="Notas principales" value={form.topNotes} onChange={updateField} />
         <button type="submit" disabled={uploading}>
-          {uploading ? 'Subiendo imagen...' : 'Agregar producto'}
+          {uploading ? 'Subiendo imagen...' : editingProductId ? 'Guardar cambios' : 'Agregar producto'}
         </button>
+        {editingProductId && (
+          <button type="button" onClick={handleCancelEdit} disabled={uploading}>
+            Cancelar edición
+          </button>
+        )}
       </form>
       {error && <p className="admin-form-error">{error}</p>}
 
@@ -109,9 +148,14 @@ export default function AdminPanel({ products, onAddProduct, onDeleteProduct }) 
         {products.map((product) => (
           <div className="admin-product-row" key={product.id}>
             <span>{product.name} <small>{product.brand}</small></span>
-            <button type="button" onClick={() => onDeleteProduct(product.id)}>
-              Eliminar
-            </button>
+            <div className="admin-product-actions">
+              <button type="button" onClick={() => handleEdit(product)}>
+                Editar
+              </button>
+              <button type="button" onClick={() => onDeleteProduct(product.id)}>
+                Eliminar
+              </button>
+            </div>
           </div>
         ))}
       </div>

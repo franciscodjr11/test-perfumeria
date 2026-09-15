@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartProvider } from './context/CartContext';
 import NavbarWithIntro from './components/NavbarWithIntro';
 import WelcomeBanner from './components/WelcomeBanner';
@@ -12,7 +12,14 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
-  const [productList, setProductList] = useState(initialProductsFromDataJS);
+  const [productList, setProductList] = useState(() => {
+    const savedProducts = localStorage.getItem('perfumeria_products');
+    return savedProducts ? JSON.parse(savedProducts) : initialProductsFromDataJS;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('perfumeria_products', JSON.stringify(productList));
+  }, [productList]);
 
   const handleSimulatedLogin = () => {
     setShowAdminModal(false);
@@ -21,6 +28,12 @@ function App() {
 
   const handleAddProduct = (newProduct) => {
     setProductList((currentProducts) => [newProduct, ...currentProducts]);
+  };
+
+  const handleUpdateProduct = (updatedProduct) => {
+    setProductList((currentProducts) => currentProducts.map((product) => (
+      product.id === updatedProduct.id ? updatedProduct : product
+    )));
   };
 
   const handleDeleteProduct = (id) => {
@@ -41,6 +54,7 @@ function App() {
           <AdminPanel
             products={productList}
             onAddProduct={handleAddProduct}
+            onUpdateProduct={handleUpdateProduct}
             onDeleteProduct={handleDeleteProduct}
           />
         )}

@@ -106,11 +106,19 @@
   margin-left: 8px;
   color: #888;
 }
+ /* Admin Panel CSS */
+
+.admin-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #f4f4f4;
+}
 
 .admin-product-row button {
   border: 0;
   background: transparent;
-  color: #e58b8b;
+  color: #cde58b;
   cursor: pointer;
 }
 
