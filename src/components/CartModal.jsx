@@ -3,26 +3,32 @@ import { useCart } from '../context/CartContext';
 import './CartModal.css';
 
 export default function CartModal() {
-  const { cart, removeFromCart, updateQuantity, total, isCartOpen, setIsCartOpen } = useCart();
-
-  // Reemplazar con el número de WhatsApp de la vendedora (con código de país, ej: 18091234567)
-  const PHONE_NUMBER = '18090000000';
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    total: totalAmount,
+    clearCart,
+    isCartOpen,
+    setIsCartOpen,
+  } = useCart();
 
   if (!isCartOpen) return null;
 
-  const handleSendWhatsApp = () => {
+  const handleCheckoutWhatsApp = () => {
     if (cart.length === 0) return;
 
-    let message = `¡Hola! Quisiera realizar el siguiente pedido en *Test Perfumeria*:\n\n`;
+    let message = '¡Hola! Quisiera consultar/encargar el siguiente pedido:\n\n';
     cart.forEach((item) => {
-      message += `• *${item.name}* (${item.brand}) x${item.quantity} - $${(
-        item.price * item.quantity
-      ).toFixed(2)}\n`;
+      message += `• ${item.name} (${item.quantity}x) - $${item.price * item.quantity}\n`;
     });
-    message += `\n*Total estimado:* $${total.toFixed(2)}\n\n¿Tienen disponibilidad para coordinar la entrega?`;
+    message += `\n*Total estimado:* $${totalAmount}`;
 
-    const url = `https://wa.me/${8099384669}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
+    const whatsappPhone = import.meta.env.VITE_WHATSAPP_PHONE || '18090000000';
+    const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+
+    clearCart();
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -63,9 +69,9 @@ export default function CartModal() {
           <div className="cart-footer">
             <div className="cart-total">
               <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
+              <span>${totalAmount.toFixed(2)}</span>
             </div>
-            <button className="whatsapp-btn" onClick={handleSendWhatsApp}>
+            <button className="whatsapp-btn" onClick={handleCheckoutWhatsApp}>
               Pedir por WhatsApp
             </button>
           </div>

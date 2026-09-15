@@ -9,6 +9,14 @@ export function CartProvider({ children }) {
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
+      const currentQtyInCart = existingItem ? existingItem.quantity : 0;
+      const stock = product.stock ?? Infinity;
+
+      if (currentQtyInCart >= stock) {
+        alert(`Lo sentimos, solo quedan ${product.stock} unidades disponibles de este producto.`);
+        return prevCart;
+      }
+
       if (existingItem) {
         return prevCart.map((item) =>
           item.id === product.id
@@ -31,12 +39,23 @@ export function CartProvider({ children }) {
         .map((item) => {
           if (item.id === id) {
             const newQty = item.quantity + delta;
+            const stock = item.stock ?? Infinity;
+
+            if (delta > 0 && newQty > stock) {
+              alert(`Lo sentimos, solo quedan ${item.stock} unidades disponibles de este producto.`);
+              return item;
+            }
+
             return newQty > 0 ? { ...item, quantity: newQty } : null;
           }
           return item;
         })
         .filter(Boolean)
     );
+  };
+
+  const clearCart = () => {
+    setCart([]);
   };
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -49,6 +68,7 @@ export function CartProvider({ children }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         total,
         totalCount,
         isCartOpen,
